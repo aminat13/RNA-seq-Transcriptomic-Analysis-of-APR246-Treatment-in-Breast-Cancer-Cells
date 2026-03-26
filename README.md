@@ -1,118 +1,146 @@
-# RNA-seq-Transcriptomic-Analysis-of-APR246-Treatment-in-Breast-Cancer-Cells
+# RNA-seq Transcriptomic Analysis of APR246 Treatment in Breast Cancer Cells
 
 This repository contains an RNA-seq transcriptomic analysis investigating gene expression changes in BT459 breast cancer cells treated with APR246 compared with DMSO controls.
+
 The project was completed as part of the Computational Biology module in the MSc Technologies and Analytics in Precision Medicine.
-The analysis integrates Linux-based preprocessing pipelines with statistical analysis in R to identify differentially expressed genes and biological pathways associated with APR246 treatment.
+
+The analysis combines RNA-seq preprocessing on an HPC cluster with downstream differential expression and pathway enrichment analysis in R.
+
+---
 
 ## Project Overview
 
-RNA sequencing (RNA-seq) allows genome-wide measurement of transcript abundance and enables the identification of genes that are differentially expressed between experimental conditions.
-In this project, RNA-seq data from BT459 breast cancer cells were analysed to evaluate the transcriptional effects of APR246 treatment, a compound known to restore mutant p53 function and induce tumour cell apoptosis.
+RNA sequencing (RNA-seq) enables genome-wide quantification of transcript abundance and allows the identification of genes that are differentially expressed between biological conditions.
 
-The analysis involved:
+In this project, RNA-seq data from BT459 breast cancer cells were analysed to evaluate the transcriptional effects of APR246 treatment relative to DMSO controls.
 
-- preprocessing and quality control of raw sequencing reads
-- read alignment and gene quantification
-- statistical analysis of differential gene expression
-- pathway enrichment analysis to interpret biological effects
+The report describes the following workflow:
 
-The goal of the study was to identify genes and pathways affected by APR246 treatment.
+- FastQC assessment of raw reads
+- adapter trimming with BBMap
+- repeat FastQC on trimmed reads
+- index generation
+- read alignment
+- gene counting and annotation
+- differential expression analysis
+- pathway enrichment analysis
+
+The aim of the study was to identify genes and biological pathways affected by APR246 treatment.
+
+---
 
 ### Research Question
 
 Which genes and biological pathways are differentially expressed in BT459 breast cancer cells following APR246 treatment compared with DMSO controls?
 
+---
+
 ## Dataset
 
-The dataset consisted of RNA-seq reads generated from:
+The dataset consisted of paired-end RNA-seq data generated from:
 
 - BT459 breast cancer cells
 - APR246-treated samples
 - DMSO control samples
 
-Each experimental condition contained three biological replicates, producing a total of six RNA-seq samples.
+Each condition contained three biological replicates, giving a total of six samples.
 
-## RNA-seq Preprocessing Workflow
+---
 
-Raw sequencing data were processed on a high-performance computing (HPC) cluster using a standard RNA-seq preprocessing workflow provided during the course.
+## RNA-seq Preprocessing
 
-The preprocessing workflow included the following steps:
+According to the report, the raw sequencing data were processed using several Linux-based workflows on an HPC cluster.
 
-### 1. Read Quality Control
+The preprocessing steps included:
 
-Initial sequencing quality was assessed using FastQC, which evaluates metrics such as:
+1. FastQC quality assessment of raw reads  
+2. Adapter trimming using BBMap  
+3. FastQC on trimmed reads  
+4. Index generation
+5. Read alignment 
+6. Gene count generation
+7. Gene annotation
 
-- per-base sequence quality
-- GC content distribution
-- sequence duplication levels
-- adapter contamination
+The report also notes that commands such as `sacct -j <jobID>` were used to monitor job status and `more slurm-<jobID>.out` was used to inspect batch job output.
 
-These metrics help identify potential issues with sequencing data before further processing.
+---
 
-### 2. Adapter Trimming and Filtering
+## Exploratory Quality Assessment
 
-Low-quality bases and adapter sequences were removed using BBMap trimming tools.
-Trimming improves alignment performance by removing sequencing artifacts and low-confidence bases.
-Quality control was repeated after trimming to confirm improvements in read quality.
+The report includes interpretation of the following RNA-seq QC outputs:
 
-### 3. Genome Alignment
+- Per Base Sequence Quality: All sequences were described as showing good per-base sequence quality, suggesting low sequencing error rates.
 
-Trimmed reads were aligned to the reference genome using the Rsubread alignment algorithm.
-This step generates BAM alignment files containing the genomic locations of sequencing reads.
+- Per Sequence GC Content: Most sequences showed moderate GC-content deviation, interpreted as mild but not problematic technical deviation.
 
-### 4. Gene Quantification
+- Sequence Duplication Levels: All sequences showed poor duplication reports, suggesting low library complexity likely due to PCR amplification or highly abundant transcripts.
 
-Gene-level read counts were generated using featureCounts, which assigns aligned reads to annotated genomic features.
-The resulting count matrix contains the number of reads mapping to each gene for each sample and forms the basis of downstream statistical analysis.
+A summary table of FastQC results for raw and trimmed sequences is included in the report.
 
-# Differential Expression Analysis
+---
 
-Downstream transcriptomic analysis was performed in R using the limma-voom framework.
+## Summary Plots
 
-Key steps included:
+The report presents three main summary plots.
 
-- Creating a DGEList object from the gene count matrix
-- Filtering low-expression genes
-- Normalising library sizes
-- Transforming count data using voom
-- Fitting a linear model to estimate gene expression differences between conditions
-- Applying treat() to test for biologically meaningful fold-changes
+- Mapped vs Unmapped Reads: All six samples showed approximately **23–30 million reads** with a very small unmapped fraction, indicating high mapping efficiency.
+-  Library Size per Sample: Library sizes ranged from approximately **17–23 million counts**, with no clear outliers across APR246 and DMSO replicates.
 
-Genes were considered significantly differentially expressed based on adjusted p-values and fold-change thresholds.
+- Multidimensional Scaling (MDS) Plot: APR246 and DMSO samples formed two distinct clusters along principal component 1, indicating that treatment was a major source of variation.
 
-## Exploratory Data Analysis
+---
 
-Several plots were used to assess sample quality and relationships between samples.
+## Differential Expression Analysis
 
-- Library Size Distribution: Library size plots were used to examine differences in sequencing depth across samples.
+Differential expression analysis was performed in R using the limma-voom workflow.
 
-- Multidimensional Scaling (MDS): MDS plots visualised similarity between samples based on gene expression profiles.
+The report shows code for:
 
-Samples clustered according to treatment condition, indicating a measurable transcriptional response to APR246 treatment.
+- constructing a design matrix
+- defining the contrast APR246 - DMSO
+- normalising expression data using voom
+- fitting a linear model
+- extracting differentially expressed genes
+- subsetting the top 5 upregulated and top 5 downregulated genes
+- generating a volcano plot
+
+Positive log fold-change values represent genes upregulated in APR246, while negative values indicate relative downregulation in APR246 or higher expression in DMSO.
+
+---
 
 ## Differential Expression Results
 
-Differential expression analysis identified genes that were significantly up-regulated or down-regulated following APR246 treatment.
+The report highlights the following top upregulated genes in APR246-treated cells:
 
-Visualisations generated during the analysis include:
+- WISP3
+- TAS2R5
+- LOC44887
+- FBXO39
+- TCEB3CL2
 
-- Volcano plots highlighting significantly regulated genes
-- Heatmaps of differentially expressed genes
-- Sample expression distribution plots
+The top downregulated genes reported were:
 
-These visualisations help identify transcriptional signatures associated with treatment.
+- MYCL
+- PCDH18
+- HIST1H1A
+- TET1
+- SNORD73A
+
+A volcano plot was used to visualise the differentially expressed genes between APR246 and DMSO.
+
+---
 
 ## Pathway Enrichment Analysis
 
-To interpret the biological significance of the differentially expressed genes, KEGG pathway enrichment analysis was performed.
+The report includes KEGG pathway enrichment analysis of the differentially expressed genes.
 
-Pathway analysis identified enrichment of biological pathways associated with:
+The most enriched pathways reported were:
 
-- apoptosis and programmed cell death
-- cellular stress response pathways
-- cancer signalling pathways
+- Cell cycle
+- MicroRNAs in cancer
+- FoxO signalling pathway
 
-These findings are consistent with the known mechanism of action of APR246, which restores p53 function and promotes tumour cell apoptosis.
+These pathways were discussed in the context of breast cancer biology and the proposed anti-tumour activity of APR246.
 
 ## Running the Analysis
 
