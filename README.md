@@ -69,11 +69,11 @@ The report also notes that commands such as `sacct -j <jobID>` were used to moni
 
 The report includes interpretation of the following RNA-seq QC outputs:
 
-- Per Base Sequence Quality: All sequences were described as showing good per-base sequence quality, suggesting low sequencing error rates.
+- **Per Base Sequence Quality:** All sequences were described as showing good per-base sequence quality, suggesting low sequencing error rates.
 
-- Per Sequence GC Content: Most sequences showed moderate GC-content deviation, interpreted as mild but not problematic technical deviation.
+- **Per Sequence GC Content:** Most sequences showed moderate GC-content deviation, interpreted as mild but not problematic technical deviation.
 
-- Sequence Duplication Levels: All sequences showed poor duplication reports, suggesting low library complexity likely due to PCR amplification or highly abundant transcripts.
+- **Sequence Duplication Levels:** All sequences showed poor duplication reports, suggesting low library complexity likely due to PCR amplification or highly abundant transcripts.
 
 A summary table of FastQC results for raw and trimmed sequences is included in the report.
 
@@ -83,10 +83,9 @@ A summary table of FastQC results for raw and trimmed sequences is included in t
 
 The report presents three main summary plots.
 
-- Mapped vs Unmapped Reads: All six samples showed approximately **23–30 million reads** with a very small unmapped fraction, indicating high mapping efficiency.
--  Library Size per Sample: Library sizes ranged from approximately **17–23 million counts**, with no clear outliers across APR246 and DMSO replicates.
-
-- Multidimensional Scaling (MDS) Plot: APR246 and DMSO samples formed two distinct clusters along principal component 1, indicating that treatment was a major source of variation.
+- **Mapped vs Unmapped Reads:** All six samples showed approximately **23–30 million reads** with a very small unmapped fraction, indicating high mapping efficiency.
+-  **Library Size per Sample:** Library sizes ranged from approximately **17–23 million counts**, with no clear outliers across APR246 and DMSO replicates.
+- **Multidimensional Scaling (MDS) Plot:** APR246 and DMSO samples formed two distinct clusters along principal component 1, indicating that treatment was a major source of variation.
 
 ---
 
